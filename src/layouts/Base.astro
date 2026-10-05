@@ -2,6 +2,7 @@
 import '@fontsource-variable/inter';
 import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
+import Intro from '../components/Intro.astro';
 import Nav from '../components/Nav.astro';
 import Cta from '../components/Cta.astro';
 import { site } from '../data/site';
@@ -36,11 +37,21 @@ const { title = site.title, description = site.description, ctaOverline } = Astr
         } catch (e) {}
         var dark = saved ? saved === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
         root.setAttribute('data-theme', dark ? 'dark' : 'light');
-        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) root.classList.add('motion');
+        if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          root.classList.add('motion');
+          // Tela de abertura só na primeira página aberta nesta sessão.
+          try {
+            if (!sessionStorage.getItem('intro')) {
+              sessionStorage.setItem('intro', '1');
+              root.classList.add('intro');
+            }
+          } catch (e) {}
+        }
       })();
     </script>
   </head>
   <body id="top">
+    <Intro />
     <Nav />
     <main>
       <slot />

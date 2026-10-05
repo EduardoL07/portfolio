@@ -1,0 +1,78 @@
+---
+import raw from '../assets/logo.svg?raw';
+
+// Tela de abertura: a assinatura se desenha e a tela some sozinha.
+// Aparece só na primeira visita da sessão (classe "intro" no <html>, definida no Base.astro).
+// As duas formas da logo: [0] = "essa" + traço final, [1] = o "L" com o sublinhado.
+const [essa, letterL] = [...raw.matchAll(/<path d="([^"]+)"/g)].map((match) => match[1]);
+---
+
+<div class="intro-screen" data-intro aria-hidden="true">
+  <svg viewBox="0 0 433 223" fill="none">
+    <defs>
+      <!-- Traços grossos que seguem o caminho da caneta e revelam a logo por baixo -->
+      <mask id="intro-mask-l" maskUnits="userSpaceOnUse" x="0" y="0" width="433" height="223">
+        <path
+          class="draw draw--l"
+          d="M166 29 L50 181 L16 205 L46 186 C100 170 170 166 221 178"
+          pathLength="1"
+          stroke="#fff"
+          stroke-width="36"
+          stroke-linejoin="round"></path>
+      </mask>
+      <mask id="intro-mask-essa" maskUnits="userSpaceOnUse" x="0" y="0" width="433" height="223">
+        <path class="draw draw--essa" d="M138 135 H432" pathLength="1" stroke="#fff" stroke-width="100"></path>
+      </mask>
+    </defs>
+    <path d={letterL} fill="currentColor" mask="url(#intro-mask-l)"></path>
+    <path d={essa} fill="currentColor" mask="url(#intro-mask-essa)"></path>
+  </svg>
+</div>
+
+<style>
+  .intro-screen {
+    display: none;
+  }
+
+  :global(html.intro) .intro-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    animation: intro-out 0.45s ease 1.7s forwards;
+  }
+
+  svg {
+    width: min(60vw, 340px);
+    height: auto;
+  }
+
+  .draw {
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  :global(html.intro) .draw--l {
+    animation: intro-draw 0.7s cubic-bezier(0.65, 0, 0.35, 1) 0.15s forwards;
+  }
+
+  :global(html.intro) .draw--essa {
+    animation: intro-draw 0.75s cubic-bezier(0.45, 0, 0.3, 1) 0.75s forwards;
+  }
+
+  @keyframes intro-draw {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes intro-out {
+    to {
+      opacity: 0;
+      visibility: hidden;
+    }
+  }
+</style>

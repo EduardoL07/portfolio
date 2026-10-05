@@ -74,7 +74,7 @@ window.addEventListener('keydown', (event) => {
 });
 
 // ---------- Entrada das seções ----------
-if (!reduceMotion) {
+function setupReveal() {
   gsap.set('[data-reveal]', { y: 24 });
   ScrollTrigger.batch('[data-reveal]', {
     start: 'top 90%',
@@ -82,6 +82,17 @@ if (!reduceMotion) {
     onEnter: (elements) =>
       gsap.to(elements, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08, overwrite: true }),
   });
+}
+
+// Com a tela de abertura, o conteúdo só entra quando ela começa a sumir.
+const intro = document.querySelector<HTMLElement>('[data-intro]');
+if (root.classList.contains('intro') && intro) {
+  window.setTimeout(setupReveal, 1600);
+  intro.addEventListener('animationend', (event) => {
+    if (event.animationName === 'intro-out') root.classList.remove('intro');
+  });
+} else if (!reduceMotion) {
+  setupReveal();
 }
 
 // ---------- Cards de case empilhados (desktop) ----------
