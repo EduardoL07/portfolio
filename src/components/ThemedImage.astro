@@ -1,0 +1,19 @@
+---
+import { Image } from 'astro:assets';
+import type { ImageMetadata } from 'astro';
+
+// Imagem com versão opcional para o tema escuro. Sem "dark", a mesma imagem vale para os dois temas.
+interface Props {
+  image: ImageMetadata;
+  dark?: ImageMetadata;
+  alt?: string;
+  widths: number[];
+  sizes: string;
+  loading?: 'eager' | 'lazy';
+}
+
+const { image, dark, alt = '', widths, sizes, loading = 'lazy' } = Astro.props;
+---
+
+<Image src={image} alt={alt} widths={widths} sizes={sizes} loading={loading} class:list={[dark && 'only-light']} />
+{dark && <Image src={dark} alt={alt} widths={widths} sizes={sizes} loading={loading} class="only-dark" />}

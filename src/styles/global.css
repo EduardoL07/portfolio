@@ -298,6 +298,16 @@ a:hover .case-card__info .btn--outline {
   }
 }
 
+/* ---------- Imagens com versão por tema ---------- */
+.only-dark,
+:root[data-theme='dark'] .only-light {
+  display: none;
+}
+
+:root[data-theme='dark'] .only-dark {
+  display: block;
+}
+
 /* ---------- Entrada das seções ---------- */
 html.motion [data-reveal] {
   opacity: 0;

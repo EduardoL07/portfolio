@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
+import ThemedImage from '../../components/ThemedImage.astro';
 import { site } from '../../data/site';
 
 export async function getStaticPaths() {
@@ -45,7 +46,13 @@ const ficha = [
 
     <div class="container" data-reveal>
       <div class="cover">
-        <Image src={data.cover} alt={`Capa do case ${data.title}`} widths={[640, 1198]} sizes="90vw" loading="eager" />
+        <Image
+          src={data.detailCover ?? data.cover}
+          alt={`Capa do case ${data.title}`}
+          widths={[640, 1280]}
+          sizes="90vw"
+          loading="eager"
+        />
       </div>
     </div>
 
@@ -72,9 +79,40 @@ const ficha = [
             <div class="block__text">
               <h2 class="h2">{block.title}</h2>
               <p class="body-l muted block__body">{block.body}</p>
+
               {block.image && (
                 <div class="block__image">
-                  <Image src={block.image} alt="" widths={[640, 1280]} sizes="(min-width: 900px) 62vw, 90vw" />
+                  <ThemedImage
+                    image={block.image}
+                    dark={block.imageDark}
+                    widths={[700, 1200, 1792]}
+                    sizes="(min-width: 900px) 62vw, 90vw"
+                  />
+                </div>
+              )}
+
+              {block.card && (
+                <div class="insight">
+                  <div class="insight__text">
+                    {block.card.tag && <span class="insight__tag">✓ {block.card.tag}</span>}
+                    <h3 class="insight__title">{block.card.title}</h3>
+                    <p class="insight__body">{block.card.body}</p>
+                    {block.card.stats.length > 0 && (
+                      <ul class="insight__stats">
+                        {block.card.stats.map((stat) => (
+                          <li class={`stat stat--${stat.tone}`}>
+                            <span class="stat__value">{stat.value}</span>
+                            <span class="stat__label">{stat.label}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
+                  </div>
+                  {block.card.phone && (
+                    <div class="insight__phone">
+                      <Image src={block.card.phone} alt="" widths={[471, 942]} sizes="(min-width: 900px) 440px, 80vw" />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
@@ -88,16 +126,23 @@ const ficha = [
         <section class="container gallery">
           <div class="section-intro" data-reveal>
             <div class="section-header">
-              <span class="overline muted">Telas finais</span>
+              <span class="overline muted">
+                {pad(data.sections.length + 1)} — Telas finais
+              </span>
             </div>
             <h2 class="h1">
               Telas <span class="serif">finais</span>
             </h2>
           </div>
           <div class="gallery__grid">
-            {data.gallery.map((img) => (
-              <div class="gallery__item" data-reveal>
-                <Image src={img} alt="" widths={[640, 1280]} sizes="90vw" />
+            {data.gallery.map((item) => (
+              <div class:list={['gallery__item', item.wide && 'gallery__item--wide']} data-reveal>
+                <ThemedImage
+                  image={item.image}
+                  dark={item.imageDark}
+                  widths={[640, 1280]}
+                  sizes={item.wide ? '90vw' : '(min-width: 900px) 45vw, 90vw'}
+                />
               </div>
             ))}
           </div>
@@ -155,13 +200,11 @@ const ficha = [
     overflow: hidden;
     border-radius: clamp(20px, 1.7vw, 24px);
     background: var(--bg-surface);
-    aspect-ratio: 1198 / 640;
+    aspect-ratio: 16 / 9;
   }
 
-  .cover img,
-  .next__cover img,
-  .gallery__item img,
-  .block__image img {
+  .cover :global(img),
+  .next__cover :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -181,10 +224,6 @@ const ficha = [
     border-top: 1px solid var(--border-strong);
   }
 
-  .blocks:first-child {
-    padding-top: clamp(64px, 8.3vw, 120px);
-  }
-
   .block {
     display: grid;
     gap: 20px;
@@ -196,17 +235,112 @@ const ficha = [
   .block__text {
     display: grid;
     gap: 24px;
+    min-width: 0;
   }
 
   .block__body {
     max-width: 760px;
   }
 
-  .block__image,
-  .gallery__item {
+  /* As imagens exportadas já trazem o fundo e os cantos arredondados do layout */
+  .block__image :global(img),
+  .gallery__item :global(img) {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Card de destaque: texto + números de um lado, celular do outro */
+  .insight {
+    --good: #2f7d4d;
+    --warn: #c0602e;
+    display: grid;
     overflow: hidden;
     border-radius: clamp(16px, 1.4vw, 20px);
     background: var(--bg-surface);
+  }
+
+  :global([data-theme='dark']) .insight {
+    --good: #3ddc84;
+    --warn: #e07a45;
+  }
+
+  .insight__text {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+    padding: clamp(20px, 1.7vw, 24px);
+  }
+
+  .insight__tag {
+    justify-self: start;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: var(--bg-base);
+    color: var(--good);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  .insight__title {
+    font-size: clamp(1.375rem, 1.95vw, 1.75rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .insight__body {
+    color: var(--text-secondary);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .insight__stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px 16px;
+    margin-top: 8px;
+  }
+
+  .stat {
+    display: grid;
+    gap: 6px;
+    padding: 18px 20px;
+    border-radius: 14px;
+    background: var(--bg-base);
+  }
+
+  .stat__value {
+    font-size: clamp(1.75rem, 2.35vw, 2.125rem);
+    font-weight: 500;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .stat--good .stat__value {
+    color: var(--good);
+  }
+
+  .stat--warn .stat__value {
+    color: var(--warn);
+  }
+
+  .stat__label {
+    color: var(--text-secondary);
+    font-size: 0.8125rem;
+    line-height: 1.2;
+  }
+
+  .insight__phone {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-top: 8px;
+  }
+
+  .insight__phone :global(img) {
+    width: min(100%, 320px);
+    height: auto;
   }
 
   .gallery {
@@ -242,11 +376,11 @@ const ficha = [
     aspect-ratio: 440 / 260;
   }
 
-  .next__cover img {
+  .next__cover :global(img) {
     transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  .next__link:hover .next__cover img {
+  .next__link:hover .next__cover :global(img) {
     transform: scale(1.03);
   }
 
@@ -262,15 +396,27 @@ const ficha = [
     }
 
     .block {
-      grid-template-columns: 320px 1fr;
+      grid-template-columns: minmax(160px, 320px) 1fr;
       gap: 64px;
+    }
+
+    .insight {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .insight__phone {
+      padding-top: 24px;
+    }
+
+    .insight__phone :global(img) {
+      width: min(100%, 471px);
     }
 
     .gallery__grid {
       grid-template-columns: repeat(2, 1fr);
     }
 
-    .gallery__item:nth-child(3n) {
+    .gallery__item--wide {
       grid-column: 1 / -1;
     }
 
