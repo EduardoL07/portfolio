@@ -2,7 +2,7 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import foto from '../assets/images/foto.png';
+import foto from '../assets/images/foto.jpg';
 import { site, links, hero, about, experiences } from '../data/site';
 
 const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
@@ -93,7 +93,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
     <div class="about">
       <div class="about__photo" data-reveal>
-        <Image src={foto} alt={`Retrato de ${site.name}`} widths={[400, 800]} sizes="(min-width: 900px) 400px, 90vw" />
+        <Image src={foto} alt={`Retrato de ${site.name}`} widths={[400, 800, 1200]} sizes="(min-width: 900px) 400px, 90vw" />
       </div>
       <div class="about__text">
         <p class="h2" data-reveal>
