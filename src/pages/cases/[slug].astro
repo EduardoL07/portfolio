@@ -1,0 +1,282 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import { site } from '../../data/site';
+
+export async function getStaticPaths() {
+  const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+  return cases.map((entry, i) => ({
+    params: { slug: entry.id },
+    props: { entry, index: i, next: cases[(i + 1) % cases.length] },
+  }));
+}
+
+const { entry, index, next } = Astro.props;
+const data = entry.data;
+const pad = (n: number) => String(n).padStart(2, '0');
+const ficha = [
+  ['Papel', data.role],
+  ['Duração', data.duration],
+  ['Ferramentas', data.tools],
+  ['Ano', data.year],
+];
+---
+
+<Base title={`${data.title} — ${site.name}`} description={data.summary}>
+  <article>
+    <header class="case-hero container">
+      <a class="label muted back" href="/#cases" data-reveal>← Todos os cases</a>
+      <p class="overline faint" data-reveal>Case {pad(index + 1)} — {data.year}</p>
+      <h1 class="display" data-reveal>{data.title}</h1>
+      <p class="body-l muted case-hero__sub" data-reveal>{data.summary}</p>
+    </header>
+
+    <dl class="ficha container" data-reveal>
+      {
+        ficha.map(([label, value]) => (
+          <div>
+            <dt class="overline faint">{label}</dt>
+            <dd>{value}</dd>
+          </div>
+        ))
+      }
+    </dl>
+
+    <div class="container" data-reveal>
+      <div class="cover">
+        <Image src={data.cover} alt={`Capa do case ${data.title}`} widths={[640, 1198]} sizes="90vw" loading="eager" />
+      </div>
+    </div>
+
+    {
+      data.metrics.length > 0 && (
+        <ul class="metrics container">
+          {data.metrics.map((metric) => (
+            <li data-reveal>
+              <span class="h1">{metric.value}</span>
+              <span class="muted">{metric.label}</span>
+            </li>
+          ))}
+        </ul>
+      )
+    }
+
+    <div class="container blocks">
+      {
+        data.sections.map((block, i) => (
+          <section class="block" data-reveal>
+            <p class="overline muted">
+              {pad(i + 1)} — {block.label}
+            </p>
+            <div class="block__text">
+              <h2 class="h2">{block.title}</h2>
+              <p class="body-l muted block__body">{block.body}</p>
+              {block.image && (
+                <div class="block__image">
+                  <Image src={block.image} alt="" widths={[640, 1280]} sizes="(min-width: 900px) 62vw, 90vw" />
+                </div>
+              )}
+            </div>
+          </section>
+        ))
+      }
+    </div>
+
+    {
+      data.gallery.length > 0 && (
+        <section class="container gallery">
+          <div class="section-intro" data-reveal>
+            <div class="section-header">
+              <span class="overline muted">Telas finais</span>
+            </div>
+            <h2 class="h1">
+              Telas <span class="serif">finais</span>
+            </h2>
+          </div>
+          <div class="gallery__grid">
+            {data.gallery.map((img) => (
+              <div class="gallery__item" data-reveal>
+                <Image src={img} alt="" widths={[640, 1280]} sizes="90vw" />
+              </div>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
+    <nav class="container next" aria-label="Próximo case">
+      <a class="next__link" href={`/cases/${next.id}/`} data-reveal>
+        <div class="next__text">
+          <span class="overline muted">Próximo case</span>
+          <span class="h1">{next.data.title} ↗</span>
+        </div>
+        <div class="next__cover">
+          <Image src={next.data.cover} alt="" widths={[440, 880]} sizes="(min-width: 900px) 440px, 90vw" />
+        </div>
+      </a>
+    </nav>
+  </article>
+</Base>
+
+<style>
+  .case-hero {
+    display: grid;
+    gap: clamp(24px, 2.8vw, 40px);
+    padding-top: calc(var(--nav-h) + clamp(48px, 7vw, 100px));
+    padding-bottom: clamp(48px, 5.5vw, 80px);
+  }
+
+  .back:hover {
+    color: var(--text-primary);
+  }
+
+  .case-hero__sub {
+    max-width: 760px;
+  }
+
+  .ficha {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 24px 16px;
+    margin-block: 0 clamp(48px, 5.5vw, 80px);
+  }
+
+  .ficha > div {
+    padding-top: clamp(16px, 1.4vw, 20px);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .ficha dd {
+    margin: 8px 0 0;
+  }
+
+  .cover {
+    overflow: hidden;
+    border-radius: clamp(20px, 1.7vw, 24px);
+    background: var(--bg-surface);
+    aspect-ratio: 1198 / 640;
+  }
+
+  .cover img,
+  .next__cover img,
+  .gallery__item img,
+  .block__image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .metrics {
+    display: grid;
+    gap: 24px;
+    padding-block: clamp(64px, 8.3vw, 120px);
+  }
+
+  .metrics li {
+    display: grid;
+    gap: 12px;
+    align-content: start;
+    padding-top: clamp(16px, 1.7vw, 24px);
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .blocks:first-child {
+    padding-top: clamp(64px, 8.3vw, 120px);
+  }
+
+  .block {
+    display: grid;
+    gap: 20px;
+    padding-top: clamp(20px, 2.8vw, 40px);
+    padding-bottom: clamp(56px, 6.7vw, 96px);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .block__text {
+    display: grid;
+    gap: 24px;
+  }
+
+  .block__body {
+    max-width: 760px;
+  }
+
+  .block__image,
+  .gallery__item {
+    overflow: hidden;
+    border-radius: clamp(16px, 1.4vw, 20px);
+    background: var(--bg-surface);
+  }
+
+  .gallery {
+    padding-bottom: clamp(80px, 11vw, 160px);
+  }
+
+  .gallery__grid {
+    display: grid;
+    gap: clamp(12px, 1.7vw, 24px);
+  }
+
+  .next {
+    padding-bottom: clamp(64px, 8.3vw, 120px);
+  }
+
+  .next__link {
+    display: grid;
+    gap: 20px;
+    padding-top: clamp(24px, 2.8vw, 40px);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .next__text {
+    display: grid;
+    gap: clamp(20px, 1.7vw, 24px);
+    align-content: end;
+  }
+
+  .next__cover {
+    overflow: hidden;
+    border-radius: clamp(16px, 1.4vw, 20px);
+    background: var(--bg-surface);
+    aspect-ratio: 440 / 260;
+  }
+
+  .next__cover img {
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .next__link:hover .next__cover img {
+    transform: scale(1.03);
+  }
+
+  @media (min-width: 900px) {
+    .ficha {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 32px;
+    }
+
+    .metrics {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .block {
+      grid-template-columns: 320px 1fr;
+      gap: 64px;
+    }
+
+    .gallery__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .gallery__item:nth-child(3n) {
+      grid-column: 1 / -1;
+    }
+
+    .next__link {
+      grid-template-columns: 1fr 440px;
+      align-items: end;
+    }
+  }
+</style>

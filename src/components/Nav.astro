@@ -1,0 +1,177 @@
+---
+import Logo from './Logo.astro';
+import ThemeToggle from './ThemeToggle.astro';
+import { nav, links, site } from '../data/site';
+---
+
+<header class="nav" data-nav>
+  <div class="container nav__inner">
+    <a href="/" aria-label={`${site.name} — início`}><Logo /></a>
+    <div class="nav__right">
+      <nav class="nav__links" aria-label="Principal">
+        {nav.map((item) => <a class="label" href={item.href}>{item.label}</a>)}
+      </nav>
+      <ThemeToggle />
+      <button class="nav__menu" type="button" data-menu-toggle aria-expanded="false" aria-controls="menu" aria-label="Abrir menu">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true">
+          <path class="line line--a" d="M4 9h16"></path>
+          <path class="line line--b" d="M4 15h16"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="menu" id="menu" data-menu aria-hidden="true">
+  <div class="container menu__inner">
+    <ol class="menu__links">
+      {
+        nav.map((item, i) => (
+          <li>
+            <a href={item.href} data-menu-link>
+              <span class="h1">{item.label}</span>
+              <span class="overline faint">{String(i + 1).padStart(2, '0')}</span>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="menu__foot">
+      <a class="btn btn--outline" href={links.email}>Enviar e-mail ↗</a>
+      <div class="menu__social label muted">
+        <a href={links.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
+        <a href={links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+        <a href={links.behance} target="_blank" rel="noopener">Behance</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .nav {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 50;
+    height: var(--nav-h);
+    background: color-mix(in srgb, var(--bg-base) 82%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav.is-hidden {
+    transform: translateY(-100%);
+  }
+
+  .nav__inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .nav__right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .nav__links {
+    display: none;
+    gap: 32px;
+    color: var(--text-secondary);
+  }
+
+  .nav__links a {
+    transition: color 0.2s ease;
+  }
+
+  .nav__links a:hover {
+    color: var(--text-primary);
+  }
+
+  .nav__menu {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+  }
+
+  .line {
+    transform-origin: 12px 12px;
+    transition: transform 0.3s ease;
+  }
+
+  :global(html.menu-open) .line--a {
+    transform: translateY(3px) rotate(45deg);
+  }
+
+  :global(html.menu-open) .line--b {
+    transform: translateY(-3px) rotate(-45deg);
+  }
+
+  .menu {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    padding-top: var(--nav-h);
+    background: var(--bg-base);
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.3s ease,
+      visibility 0.3s;
+  }
+
+  :global(html.menu-open) .menu {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  :global(html.menu-open) .nav {
+    background: var(--bg-base);
+    transform: none;
+  }
+
+  .menu__inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding-top: 48px;
+    padding-bottom: 32px;
+  }
+
+  .menu__links a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-block: 20px;
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .menu__foot {
+    display: grid;
+    gap: 16px;
+  }
+
+  .menu__social {
+    display: flex;
+    gap: 24px;
+  }
+
+  @media (min-width: 900px) {
+    .nav__right {
+      gap: 40px;
+    }
+
+    .nav__links {
+      display: flex;
+    }
+
+    .nav__menu,
+    .menu {
+      display: none;
+    }
+  }
+</style>

@@ -1,0 +1,377 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import foto from '../assets/images/foto.png';
+import { site, links, hero, about, experiences } from '../data/site';
+
+const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+
+<Base ctaOverline="04 — Contato">
+  <!-- Hero -->
+  <section class="hero container">
+    <p class="hero__available label muted" data-reveal>
+      <span class="dot"></span>{site.available}
+    </p>
+    <h1 class="display" aria-label={`${hero.lead} ${hero.typed[0]}`} data-reveal>
+      <span aria-hidden="true">
+        {hero.lead}
+        <span class="serif typed-line"><span data-typed={JSON.stringify(hero.typed)}>{hero.typed[0]}</span></span>
+      </span>
+    </h1>
+    <div class="hero__bottom" data-reveal>
+      <p class="body-l muted hero__intro">{hero.intro}</p>
+      <dl class="hero__meta">
+        <div>
+          <dt class="overline faint">Localização</dt>
+          <dd class="label">{site.location}</dd>
+        </div>
+        <div>
+          <dt class="overline faint">Foco</dt>
+          <dd class="label">{site.focus}</dd>
+        </div>
+        <div class="hero__scroll">
+          <dt class="overline faint">Scroll</dt>
+          <dd class="label">Role para explorar ↓</dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <!-- Cases -->
+  <section class="section container" id="cases">
+    <div class="section-intro" data-reveal>
+      <div class="section-header">
+        <span class="overline muted">01 — Cases</span>
+        <span class="overline faint">({pad(cases.length)})</span>
+      </div>
+      <h2 class="h1">Cases <span class="serif">selecionados</span></h2>
+    </div>
+
+    <ol class="case-list">
+      {
+        cases.map((item, i) => (
+          <li class="case-card" style={`--i:${i}`} data-stack-card>
+            <a class="case-card__inner" href={`/cases/${item.id}/`} data-stack-inner>
+              <div class="case-card__info">
+                <div class="case-card__title">
+                  <span class="overline faint">{pad(i + 1)}</span>
+                  <div>
+                    <h3 class="h2">{item.data.title}</h3>
+                    <p class="muted case-card__summary">{item.data.summary}</p>
+                  </div>
+                </div>
+                <div class="case-card__meta">
+                  <span class="label muted">{[item.data.year, ...item.data.tags].join(' · ')}</span>
+                  <span class="btn btn--outline">Ver case ↗</span>
+                </div>
+              </div>
+              <div class="case-card__cover">
+                <Image src={item.data.cover} alt={`Capa do case ${item.data.title}`} widths={[640, 1198]} sizes="(min-width: 900px) 84vw, 90vw" loading={i === 0 ? 'eager' : 'lazy'} />
+              </div>
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+
+    <div class="cases__more" data-reveal>
+      <a class="btn btn--outline" href={links.portfolio} target="_blank" rel="noopener">Ver portfólio ↗</a>
+    </div>
+  </section>
+
+  <!-- Sobre -->
+  <section class="section container" id="sobre">
+    <div class="section-intro" data-reveal>
+      <div class="section-header">
+        <span class="overline muted">02 — Sobre</span>
+      </div>
+      <h2 class="h1">Um pouco <span class="serif">sobre mim</span></h2>
+    </div>
+
+    <div class="about">
+      <div class="about__photo" data-reveal>
+        <Image src={foto} alt={`Retrato de ${site.name}`} widths={[400, 800]} sizes="(min-width: 900px) 400px, 90vw" />
+      </div>
+      <div class="about__text">
+        <p class="h2" data-reveal>
+          {about.statementLead}
+          <span class="serif about__serif">{about.statementSerif}</span>
+        </p>
+        <p class="body-l muted" data-reveal>{about.bio}</p>
+        <ol class="principles">
+          {
+            about.principles.map((item, i) => (
+              <li data-reveal>
+                <span class="overline faint">{pad(i + 1)}</span>
+                <h3 class="h3">{item.title}</h3>
+                <p class="muted">{item.text}</p>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- Experiência -->
+  <section class="section container" id="experiencia">
+    <div class="section-intro" data-reveal>
+      <div class="section-header">
+        <span class="overline muted">03 — Experiência</span>
+      </div>
+      <h2 class="h1">Experiência <span class="serif">profissional</span></h2>
+    </div>
+
+    <ol class="xp">
+      {
+        experiences.map((item) => (
+          <li class="xp__item" data-reveal>
+            <span class="label muted">{item.period}</span>
+            <h3 class="h3">{item.role}</h3>
+            <p class="muted">{item.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <div class="xp__cv" data-reveal>
+      <a class="btn btn--outline" href={links.cv} target="_blank" rel="noopener">Baixar currículo ↗</a>
+    </div>
+  </section>
+</Base>
+
+<style>
+  /* Hero */
+  .hero {
+    display: grid;
+    gap: clamp(32px, 5vw, 72px);
+    padding-top: calc(var(--nav-h) + clamp(72px, 9.7vw, 140px));
+    padding-bottom: clamp(72px, 8.3vw, 120px);
+  }
+
+  .hero__available {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--status-available);
+  }
+
+  .hero__bottom {
+    display: grid;
+    gap: 32px;
+  }
+
+  .hero__intro {
+    max-width: 540px;
+  }
+
+  .hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px clamp(24px, 4.4vw, 64px);
+    margin: 0;
+  }
+
+  .hero__meta dd {
+    margin: 6px 0 0;
+  }
+
+  .hero__scroll {
+    display: none;
+  }
+
+  /* Cases */
+  .case-list {
+    display: grid;
+    gap: clamp(16px, 2.8vw, 40px);
+  }
+
+  .case-card__inner {
+    display: grid;
+    gap: clamp(20px, 2.8vw, 40px);
+    padding: clamp(20px, 2.8vw, 40px);
+    border-radius: clamp(24px, 2.2vw, 32px);
+    background: var(--bg-surface);
+    border: 1px solid var(--border-subtle);
+    will-change: transform;
+  }
+
+  .case-card__info {
+    display: grid;
+    gap: 20px;
+  }
+
+  .case-card__title {
+    display: flex;
+    gap: clamp(16px, 2.2vw, 32px);
+  }
+
+  .case-card__title .overline {
+    padding-top: 0.9em;
+  }
+
+  .case-card__summary {
+    max-width: 560px;
+    margin-top: 12px;
+  }
+
+  .case-card__meta {
+    display: grid;
+    gap: 20px;
+  }
+
+  .case-card__meta .btn {
+    width: 100%;
+  }
+
+  .case-card__cover {
+    overflow: hidden;
+    border-radius: clamp(16px, 1.4vw, 20px);
+    background: var(--bg-surface-strong);
+    aspect-ratio: 1198 / 640;
+  }
+
+  .case-card__cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .case-card__inner:hover .case-card__cover img {
+    transform: scale(1.03);
+  }
+
+  .cases__more {
+    display: flex;
+    justify-content: center;
+    margin-top: clamp(32px, 4.5vw, 64px);
+  }
+
+  /* Sobre */
+  .about {
+    display: grid;
+    gap: 32px;
+  }
+
+  .about__photo {
+    overflow: hidden;
+    border-radius: 24px;
+    background: var(--bg-surface);
+    aspect-ratio: 4 / 5;
+  }
+
+  .about__photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .about__text {
+    display: grid;
+    gap: clamp(32px, 2.8vw, 40px);
+    align-content: start;
+  }
+
+  .about__serif {
+    display: block;
+  }
+
+  .principles {
+    display: grid;
+    gap: 24px;
+  }
+
+  .principles li {
+    display: grid;
+    gap: 10px;
+    align-content: start;
+    padding-top: clamp(16px, 1.4vw, 20px);
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  /* Experiência */
+  .xp__item {
+    display: grid;
+    gap: 8px;
+    padding-block: clamp(24px, 2.2vw, 32px);
+    border-bottom: 1px solid var(--border-subtle);
+  }
+
+  .xp__cv {
+    margin-top: clamp(24px, 2.8vw, 40px);
+  }
+
+  @media (max-width: 899px) {
+    /* No mobile a capa vem antes do texto, como no layout do Figma */
+    .case-card__cover {
+      order: -1;
+    }
+
+    .cases__more .btn,
+    .xp__cv .btn {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 900px) {
+    .hero__bottom {
+      grid-template-columns: 1fr auto;
+      align-items: end;
+    }
+
+    .hero__scroll {
+      display: block;
+    }
+
+    /* Cards empilhados: cada card gruda no topo e o próximo sobe por cima */
+    .case-card {
+      position: sticky;
+      top: calc(var(--nav-h) + 8px + var(--i) * 20px);
+    }
+
+    .case-card__info {
+      grid-template-columns: 1fr auto;
+      align-items: start;
+    }
+
+    .case-card__meta {
+      justify-items: end;
+    }
+
+    .case-card__meta .btn {
+      width: auto;
+    }
+
+    /* Limita a altura da capa para o card inteiro caber na tela enquanto está fixo */
+    .case-card__cover {
+      aspect-ratio: auto;
+      height: clamp(260px, calc(100svh - var(--nav-h) - 300px), 640px);
+    }
+
+    .about {
+      grid-template-columns: minmax(280px, 400px) 1fr;
+      gap: clamp(48px, 6.7vw, 96px);
+      align-items: start;
+    }
+
+    .principles {
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .xp__item {
+      grid-template-columns: 280px 400px 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+  }
+</style>

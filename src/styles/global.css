@@ -1,0 +1,319 @@
+/* Tokens: mesmos nomes das variáveis "Theme" do Figma */
+:root {
+  --bg-base: #faf9f7;
+  --bg-surface: #f1efec;
+  --bg-surface-strong: #e7e4df;
+  --bg-inverse: #141413;
+  --text-primary: #141413;
+  --text-secondary: #6f6e6a;
+  --text-tertiary: #a3a19b;
+  --text-on-inverse: #faf9f7;
+  --text-on-inverse-secondary: #9c9a94;
+  --border-subtle: #e4e1dc;
+  --border-strong: #141413;
+  --border-on-inverse: #33332f;
+  --accent: #ff4d1c;
+  --status-available: #1fa85a;
+
+  --font-sans: 'Inter Variable', 'Inter', system-ui, sans-serif;
+  --font-serif: 'Instrument Serif', Georgia, serif;
+
+  --fs-display: clamp(2.75rem, 6.7vw, 6rem);
+  --fs-h1: clamp(2.25rem, 4.5vw, 4rem);
+  --fs-h2: clamp(1.625rem, 2.8vw, 2.5rem);
+  --fs-h3: clamp(1.25rem, 1.7vw, 1.5rem);
+  --fs-body-l: clamp(1.125rem, 1.4vw, 1.25rem);
+
+  --gutter: clamp(20px, 5.5vw, 80px);
+  --nav-h: 64px;
+  --section-gap: clamp(96px, 11vw, 160px);
+  color-scheme: light;
+}
+
+:root[data-theme='dark'] {
+  --bg-base: #0f0f0e;
+  --bg-surface: #1a1a18;
+  --bg-surface-strong: #262623;
+  --bg-inverse: #f2f0ec;
+  --text-primary: #f2f0ec;
+  --text-secondary: #9c9a94;
+  --text-tertiary: #62615c;
+  --text-on-inverse: #141413;
+  --text-on-inverse-secondary: #6f6e6a;
+  --border-subtle: #2a2a27;
+  --border-strong: #f2f0ec;
+  --border-on-inverse: #d9d6d0;
+  --accent: #ff6a3d;
+  --status-available: #3ddc84;
+  color-scheme: dark;
+}
+
+@media (min-width: 900px) {
+  :root {
+    --nav-h: 88px;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
+}
+
+/* Transição suave só durante a troca de tema */
+html.theme-switching *,
+html.theme-switching *::before,
+html.theme-switching *::after {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    fill 0.3s ease !important;
+}
+
+h1,
+h2,
+h3,
+p,
+ul,
+ol,
+figure {
+  margin: 0;
+}
+
+ul,
+ol {
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+:focus-visible {
+  outline: 2px solid var(--text-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* ---------- Tipografia ---------- */
+.display,
+.h1,
+.h2,
+.h3 {
+  font-weight: 500;
+  text-wrap: balance;
+}
+
+.display {
+  font-size: var(--fs-display);
+  line-height: 1;
+  letter-spacing: -0.04em;
+}
+
+.h1 {
+  font-size: var(--fs-h1);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.h2 {
+  font-size: var(--fs-h2);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.h3 {
+  font-size: var(--fs-h3);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.body-l {
+  font-size: var(--fs-body-l);
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+}
+
+.label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.caption {
+  font-size: 0.8125rem;
+  line-height: 1.4;
+}
+
+.overline {
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.4;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.serif {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: 1.09em;
+  letter-spacing: -0.02em;
+}
+
+.muted {
+  color: var(--text-secondary);
+}
+
+.faint {
+  color: var(--text-tertiary);
+}
+
+/* ---------- Layout ---------- */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-bottom: var(--section-gap);
+}
+
+.section-intro {
+  display: grid;
+  gap: clamp(24px, 3vw, 40px);
+  margin-bottom: clamp(32px, 4.5vw, 64px);
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  padding-top: clamp(16px, 1.7vw, 24px);
+  border-top: 1px solid var(--border-subtle);
+}
+
+/* ---------- Botões ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px 24px;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.4;
+  white-space: nowrap;
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.btn--outline {
+  border-color: var(--border-strong);
+  color: var(--text-primary);
+}
+
+.btn--outline:hover,
+a:hover > .btn--outline,
+a:hover .case-card__info .btn--outline {
+  background: var(--bg-inverse);
+  color: var(--text-on-inverse);
+}
+
+.btn--inverse-solid {
+  background: var(--text-on-inverse);
+  color: var(--bg-inverse);
+}
+
+.btn--inverse-solid:hover {
+  opacity: 0.85;
+}
+
+.btn--inverse-outline {
+  border-color: var(--border-on-inverse);
+  color: var(--text-on-inverse);
+}
+
+.btn--inverse-outline:hover {
+  border-color: var(--text-on-inverse);
+}
+
+/* ---------- Efeito de digitação ---------- */
+.typed-line {
+  display: block;
+}
+
+[data-typed]::after {
+  content: '';
+  display: inline-block;
+  width: 0.04em;
+  height: 0.8em;
+  margin-left: 0.06em;
+  background: currentColor;
+  vertical-align: baseline;
+  animation: caret 1s steps(1) infinite;
+}
+
+@keyframes caret {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* ---------- Entrada das seções ---------- */
+html.motion [data-reveal] {
+  opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-typed]::after {
+    display: none;
+  }
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

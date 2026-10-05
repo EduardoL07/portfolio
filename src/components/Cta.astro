@@ -1,0 +1,88 @@
+---
+import { cta, links, site } from '../data/site';
+
+interface Props {
+  overline?: string;
+}
+
+const { overline = 'Contato' } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<footer class="cta" id="contato">
+  <div class="cta__card">
+    <p class="overline cta__overline" data-reveal>{overline}</p>
+    <h2 class="display" aria-label={`${cta.lead} ${cta.typed[0]}`} data-reveal>
+      <span aria-hidden="true">
+        {cta.lead}
+        <span class="serif typed-line"><span data-typed={JSON.stringify(cta.typed)}>{cta.typed[0]}</span></span>
+      </span>
+    </h2>
+    <div class="cta__actions" data-reveal>
+      <a class="btn btn--inverse-solid cta__main" href={links.email}>Enviar e-mail ↗</a>
+      <a class="btn btn--inverse-outline" href={links.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn--inverse-outline" href={links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
+      <a class="btn btn--inverse-outline" href={links.behance} target="_blank" rel="noopener">Behance</a>
+    </div>
+    <div class="cta__foot caption">
+      <span>© {year} {site.name}</span>
+      <a href="#top" data-to-top>Voltar ao topo ↑</a>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .cta {
+    padding: 0 clamp(8px, 1.7vw, 24px) clamp(8px, 1.7vw, 24px);
+  }
+
+  .cta__card {
+    display: grid;
+    gap: clamp(40px, 5vw, 72px);
+    max-width: 1392px;
+    margin-inline: auto;
+    padding: clamp(64px, 6.7vw, 96px) clamp(20px, 3.9vw, 56px) clamp(24px, 2.8vw, 40px);
+    border-radius: clamp(24px, 2.2vw, 32px);
+    background: var(--bg-inverse);
+    color: var(--text-on-inverse);
+  }
+
+  .cta__overline,
+  .cta__foot {
+    color: var(--text-on-inverse-secondary);
+  }
+
+  .cta__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .cta__foot {
+    display: flex;
+    justify-content: space-between;
+    padding-top: clamp(20px, 1.7vw, 24px);
+    border-top: 1px solid var(--border-on-inverse);
+  }
+
+  .cta__foot a:hover {
+    color: var(--text-on-inverse);
+  }
+
+  @media (max-width: 599px) {
+    .cta__actions {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .cta__main {
+      grid-column: 1 / -1;
+    }
+
+    .cta__actions .btn {
+      padding-inline: 8px;
+      padding-block: 16px;
+    }
+  }
+</style>

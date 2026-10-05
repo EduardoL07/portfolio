@@ -1,0 +1,30 @@
+---
+import raw from '../assets/logo.svg?raw';
+
+// A cor segue o texto (currentColor), então a logo troca sozinha entre os temas.
+const svg = raw
+  .replace(/fill="black"/g, 'fill="currentColor"')
+  .replace(/width="433" height="223"/, 'aria-hidden="true" focusable="false"');
+---
+
+<span class="logo" set:html={svg} />
+
+<style>
+  .logo {
+    display: block;
+    height: 44px;
+    aspect-ratio: 433 / 223;
+  }
+
+  .logo :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (min-width: 900px) {
+    .logo {
+      height: 52px;
+    }
+  }
+</style>
