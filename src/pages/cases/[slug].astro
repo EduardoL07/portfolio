@@ -4,6 +4,7 @@ import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import ThemedImage from '../../components/ThemedImage.astro';
 import { site } from '../../data/site';
+import { stepIcons } from '../../data/stepIcons';
 
 export async function getStaticPaths() {
   const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
@@ -91,6 +92,31 @@ const ficha = [
                 </div>
               )}
 
+              {block.steps.length > 0 && (
+                <ol class="steps">
+                  {block.steps.map((step, k) => (
+                    <li class="step">
+                      <div class="step__head">
+                        {step.icon && (
+                          <svg class="step__icon" viewBox="0 0 50 50" fill="none" aria-hidden="true" set:html={stepIcons[step.icon]} />
+                        )}
+                        <span class="overline">{pad(k + 1)}</span>
+                      </div>
+                      <div class="step__text">
+                        <h3 class="h3">{step.title}</h3>
+                        <p>{step.body}</p>
+                      </div>
+                      {step.decision && (
+                        <div class="step__decision">
+                          <span class="overline">Decisão</span>
+                          <p class="label">{step.decision}</p>
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ol>
+              )}
+
               {block.card && (
                 <div class="insight">
                   <div class="insight__text">
@@ -140,7 +166,7 @@ const ficha = [
                 <ThemedImage
                   image={item.image}
                   dark={item.imageDark}
-                  widths={[640, 1280]}
+                  widths={item.wide ? [640, 1280, 2560] : [640, 1280]}
                   sizes={item.wide ? '90vw' : '(min-width: 900px) 45vw, 90vw'}
                 />
               </div>
@@ -247,6 +273,47 @@ const ficha = [
   .gallery__item :global(img) {
     width: 100%;
     height: auto;
+  }
+
+  /* Etapas do processo: card com as etapas numeradas e a decisão de cada uma */
+  .steps {
+    display: grid;
+    gap: 28px;
+    padding: 20px;
+    border-radius: clamp(16px, 1.4vw, 20px);
+    background: var(--bg-surface);
+  }
+
+  .step {
+    display: grid;
+    gap: 16px;
+    align-content: start;
+  }
+
+  .step__head {
+    display: flex;
+    align-items: flex-start;
+  }
+
+  .step__head .overline {
+    margin-left: auto;
+  }
+
+  .step__icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .step__text {
+    display: grid;
+    gap: 8px;
+  }
+
+  .step__decision {
+    display: grid;
+    gap: 6px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border-strong);
   }
 
   /* Card de destaque: texto + números de um lado, celular do outro */
@@ -407,6 +474,17 @@ const ficha = [
     .block {
       grid-template-columns: minmax(160px, 320px) 1fr;
       gap: 64px;
+    }
+
+    .steps {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 40px 32px;
+      padding: 32px;
+    }
+
+    .step__icon {
+      width: 50px;
+      height: 50px;
     }
 
     .insight {

@@ -28,6 +28,17 @@ const cases = defineCollection({
             // Imagem do bloco; imageDark é a versão para o tema escuro (opcional)
             image: image().optional(),
             imageDark: image().optional(),
+            // Etapas numeradas do processo, cada uma com a decisão tomada (ícones em src/data/stepIcons.ts)
+            steps: z
+              .array(
+                z.object({
+                  icon: z.enum(['briefing', 'pesquisa', 'arquitetura', 'ui']).optional(),
+                  title: z.string(),
+                  body: z.string(),
+                  decision: z.string().optional(),
+                }),
+              )
+              .default([]),
             // Card de destaque com números + mockup de celular
             card: z
               .object({
