@@ -36,6 +36,19 @@ export const hero = {
     '4 anos desenhando apps, sites e plataformas de ponta a ponta: pesquisa, protótipo no Figma, teste com usuários e entrega junto a PM e Engenharia.',
 };
 
+// Cases ainda sem página: aparecem na home depois dos publicados, com a capa animada no lugar da imagem.
+export const upcomingCases = [
+  {
+    title: 'Zone',
+    year: '2026',
+    tags: ['SaaS', 'IA', 'Product Designer'],
+    summary:
+      'Zone é uma plataforma de voz, chat e transmissão de tela para comunidades, criada com dois amigos e usada no dia a dia. Interface e design system em construção.',
+    // Frase digitada na capa do card
+    typed: 'Em desenvolvimento...',
+  },
+];
+
 export const about = {
   statementLead: 'Acredito que o bom design é o que',
   statementSerif: 'Traz Resultado',

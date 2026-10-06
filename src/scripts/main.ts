@@ -133,16 +133,18 @@ if (cards.length > 1) {
 // ---------- Efeito de digitação ----------
 function typewriter(el: HTMLElement) {
   const words: string[] = JSON.parse(el.dataset.typed ?? '[]');
-  if (words.length < 2) return;
+  // Com uma frase só, ela é apagada e digitada de novo em loop.
+  if (!words.length) return;
 
   let word = 0;
   let length = words[0].length;
   let deleting = true;
   let visible = false;
   let timer = 0;
-  // A primeira troca espera mais, para dar tempo de ler a descrição ao lado do título.
-  // Com a tela de abertura, soma o tempo que o conteúdo leva para aparecer.
-  let firstDelay = 5000 + (root.classList.contains('intro') ? 1600 : 0);
+  // A primeira troca espera mais, para dar tempo de ler a descrição ao lado do título
+  // (data-typed-delay, em ms, troca essa espera). Com a tela de abertura, soma o tempo
+  // que o conteúdo leva para aparecer.
+  let firstDelay = Number(el.dataset.typedDelay ?? 5000) + (root.classList.contains('intro') ? 1600 : 0);
 
   const step = () => {
     if (!visible) return;

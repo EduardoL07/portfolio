@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import foto from '../assets/images/foto.jpg';
-import { site, links, hero, about, experiences } from '../data/site';
+import { site, links, hero, about, experiences, upcomingCases } from '../data/site';
 
 const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -45,7 +45,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     <div class="section-intro" data-reveal>
       <div class="section-header">
         <span class="overline muted">01 — Cases</span>
-        <span class="overline faint">({pad(cases.length)})</span>
+        <span class="overline faint">({pad(cases.length + upcomingCases.length)})</span>
       </div>
       <h2 class="h1">Cases <span class="serif">selecionados</span></h2>
     </div>
@@ -69,9 +69,39 @@ const pad = (n: number) => String(n).padStart(2, '0');
                 </div>
               </div>
               <div class="case-card__cover">
-                <Image src={item.data.cover} alt={`Capa do case ${item.data.title}`} widths={[640, 1198]} sizes="(min-width: 900px) 84vw, 90vw" loading={i === 0 ? 'eager' : 'lazy'} />
+                <Image src={item.data.cover} alt={`Capa do case ${item.data.title}`} widths={[640, 1198, 2396]} sizes="(min-width: 900px) 84vw, 90vw" loading={i === 0 ? 'eager' : 'lazy'} />
               </div>
             </a>
+          </li>
+        ))
+      }
+      {
+        upcomingCases.map((item, k) => (
+          <li class="case-card" style={`--i:${cases.length + k}`} data-stack-card>
+            <div class="case-card__inner" data-stack-inner>
+              <div class="case-card__info">
+                <div class="case-card__title">
+                  <span class="overline faint">{pad(cases.length + k + 1)}</span>
+                  <div>
+                    <h3 class="h2">{item.title}</h3>
+                    <p class="muted case-card__summary">{item.summary}</p>
+                  </div>
+                </div>
+                <div class="case-card__meta">
+                  <span class="label muted">{[item.year, ...item.tags].join(' · ')}</span>
+                  <span class="btn btn--outline case-card__soon">Em breve</span>
+                </div>
+              </div>
+              <div class="case-card__cover soon-cover" role="img" aria-label={item.typed}>
+                <span class="soon-cover__glow soon-cover__glow--lime"></span>
+                <span class="soon-cover__glow soon-cover__glow--magenta"></span>
+                <span class="soon-cover__glow soon-cover__glow--teal"></span>
+                <p class="serif soon-cover__text" aria-hidden="true">
+                  <span class="soon-cover__ghost">{item.typed}</span>
+                  <span><span data-typed={JSON.stringify([item.typed])} data-typed-delay="1500">{item.typed}</span></span>
+                </p>
+              </div>
+            </div>
           </li>
         ))
       }
@@ -290,6 +320,95 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   .case-card__inner:hover .case-card__cover img {
     transform: scale(1.03);
+  }
+
+  /* Case em desenvolvimento: sem página, então o CTA fica apagado e sem hover */
+  .case-card__soon {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  /* Capa do case em desenvolvimento: fundo escuro, brilhos nas cores do projeto e frase digitada */
+  .soon-cover {
+    position: relative;
+    display: grid;
+    place-items: center;
+    container-type: inline-size;
+    background: linear-gradient(135deg, #24251f, #141510);
+    color: #f8f4f1;
+  }
+
+  .soon-cover__glow {
+    position: absolute;
+    width: 78%;
+    aspect-ratio: 1.2;
+    border-radius: 50%;
+    background: radial-gradient(closest-side, var(--glow), transparent);
+    animation: glow-drift var(--dur) ease-in-out infinite alternate;
+    will-change: transform;
+  }
+
+  .soon-cover__glow--lime {
+    --glow: rgb(209 241 78 / 0.36);
+    --dur: 14s;
+    --dx: 10%;
+    --dy: -12%;
+    left: -28%;
+    bottom: -55%;
+  }
+
+  .soon-cover__glow--magenta {
+    --glow: rgb(213 76 186 / 0.34);
+    --dur: 18s;
+    --dx: -12%;
+    --dy: 10%;
+    right: -30%;
+    top: -60%;
+  }
+
+  .soon-cover__glow--teal {
+    --glow: rgb(3 153 175 / 0.4);
+    --dur: 22s;
+    --dx: -8%;
+    --dy: -10%;
+    right: -27%;
+    bottom: -58%;
+  }
+
+  /* Os brilhos derivam bem devagar, cada um no seu ritmo, para o gradiente parecer vivo */
+  @keyframes glow-drift {
+    to {
+      transform: translate(var(--dx), var(--dy)) scale(1.15);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .soon-cover__glow {
+      animation: none;
+    }
+  }
+
+  /* A frase inteira (invisível) reserva a largura, para o texto digitado não dançar */
+  .soon-cover__text {
+    position: relative;
+    display: grid;
+    margin: 0;
+    font-size: clamp(1.4rem, 6vw, 5.75rem);
+    font-size: 7.7cqw;
+    line-height: 1;
+    white-space: nowrap;
+  }
+
+  .soon-cover__text > span {
+    grid-area: 1 / 1;
+  }
+
+  .soon-cover__ghost {
+    visibility: hidden;
+  }
+
+  .soon-cover__text [data-typed]::after {
+    background: #d1f14e;
   }
 
   .cases__more {
