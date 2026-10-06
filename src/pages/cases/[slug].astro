@@ -153,7 +153,7 @@ const ficha = [
     <nav class="container next" aria-label="Próximo case">
       <a class="next__link" href={`/cases/${next.id}/`} data-reveal>
         <div class="next__text">
-          <span class="overline muted">Próximo case</span>
+          <span class="overline next__hat">Próximo case</span>
           <span class="h1">{next.data.title} ↗</span>
         </div>
         <div class="next__cover">
@@ -367,6 +367,15 @@ const ficha = [
     display: grid;
     gap: clamp(20px, 1.7vw, 24px);
     align-content: end;
+  }
+
+  /* Mesma receita do selo de disponibilidade do hero: pill com fundo de contraste */
+  .next__hat {
+    justify-self: start;
+    padding: 10px 18px;
+    border-radius: 999px;
+    background: var(--bg-inverse);
+    color: var(--text-on-inverse);
   }
 
   .next__cover {
