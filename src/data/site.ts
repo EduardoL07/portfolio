@@ -33,7 +33,7 @@ export const hero = {
   // A primeira frase é a que aparece ao carregar; as demais entram no efeito de digitação.
   typed: ['simples e úteis.', 'fáceis de usar.', 'que dão resultado.'],
   intro:
-    'Product Designer com 4 anos de experiência desenhando produtos digitais de ponta a ponta do discovery à entrega com foco em usabilidade e impacto de negócio mensurável.',
+    '4 anos desenhando apps, sites e plataformas de ponta a ponta: pesquisa, protótipo no Figma, teste com usuários e entrega junto a PM e Engenharia.',
 };
 
 export const about = {

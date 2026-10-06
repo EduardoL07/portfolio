@@ -80,7 +80,17 @@ function setupReveal() {
     start: 'top 90%',
     once: true,
     onEnter: (elements) =>
-      gsap.to(elements, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out', stagger: 0.08, overwrite: true }),
+      elements.forEach((el, i) =>
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: 'power3.out',
+          // Escalonamento padrão + atraso extra opcional por elemento (data-reveal-delay, em segundos)
+          delay: i * 0.08 + Number((el as HTMLElement).dataset.revealDelay ?? 0),
+          overwrite: true,
+        }),
+      ),
   });
 }
 
@@ -130,6 +140,9 @@ function typewriter(el: HTMLElement) {
   let deleting = true;
   let visible = false;
   let timer = 0;
+  // A primeira troca espera mais, para dar tempo de ler a descrição ao lado do título.
+  // Com a tela de abertura, soma o tempo que o conteúdo leva para aparecer.
+  let firstDelay = 5000 + (root.classList.contains('intro') ? 1600 : 0);
 
   const step = () => {
     if (!visible) return;
@@ -158,7 +171,10 @@ function typewriter(el: HTMLElement) {
   new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
     window.clearTimeout(timer);
-    if (visible) timer = window.setTimeout(step, 2400);
+    if (visible) {
+      timer = window.setTimeout(step, firstDelay);
+      firstDelay = 2400;
+    }
   }).observe(el);
 }
 
