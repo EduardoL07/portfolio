@@ -362,6 +362,13 @@ const pad = (n: number) => String(n).padStart(2, '0');
     .xp__cv .btn {
       width: 100%;
     }
+
+    /* CTA dos cards mais destacado no mobile: sólido, invertido conforme o tema */
+    .case-card__meta .btn--outline {
+      background: var(--bg-inverse);
+      border-color: var(--bg-inverse);
+      color: var(--text-on-inverse);
+    }
   }
 
   @media (min-width: 900px) {
