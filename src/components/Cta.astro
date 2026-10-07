@@ -1,5 +1,6 @@
 ---
 import { cta, links, site } from '../data/site';
+import BrandIcon from './BrandIcon.astro';
 
 interface Props {
   overline?: string;
@@ -19,10 +20,10 @@ const year = new Date().getFullYear();
       </span>
     </h2>
     <div class="cta__actions" data-reveal>
-      <a class="btn btn--inverse-solid cta__main" href={links.email}>Enviar e-mail ↗</a>
-      <a class="btn btn--inverse-outline" href={links.whatsapp} target="_blank" rel="noopener">WhatsApp</a>
-      <a class="btn btn--inverse-outline" href={links.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-      <a class="btn btn--inverse-outline" href={links.behance} target="_blank" rel="noopener">Behance</a>
+      <a class="btn btn--inverse-solid cta__main" href={links.email}><BrandIcon name="email" /> Enviar e-mail ↗</a>
+      <a class="btn btn--inverse-outline" href={links.whatsapp} target="_blank" rel="noopener"><BrandIcon name="whatsapp" /> WhatsApp</a>
+      <a class="btn btn--inverse-outline" href={links.linkedin} target="_blank" rel="noopener"><BrandIcon name="linkedin" /> LinkedIn</a>
+      <a class="btn btn--inverse-outline" href={links.behance} target="_blank" rel="noopener"><BrandIcon name="behance" /> Behance</a>
     </div>
     <div class="cta__foot caption">
       <span>© {year} {site.name}</span>
