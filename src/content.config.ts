@@ -15,6 +15,8 @@ const cases = defineCollection({
       cover: image(),
       // Capa da página do case (se faltar, usa a mesma da home)
       detailCover: image().optional(),
+      // Link do projeto no Behance (sem ele, o CTA aponta para o perfil)
+      behance: z.string().url().optional(),
       role: z.string(),
       duration: z.string(),
       tools: z.string(),
