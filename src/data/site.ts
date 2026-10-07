@@ -73,10 +73,11 @@ export const experiences = [
   },
 ];
 
-// Cursos, na mesma lista da experiência. Substituir os períodos entre colchetes pelas datas reais.
+// Cursos, na mesma lista da experiência
 export const education = [
-  { period: '[2025 — atual]', role: 'UI/UX', text: 'Design Circuit · Curso em andamento' },
-  { period: '[2024]', role: 'Framer Expert', text: 'Framer Skills · Curso concluído' },
+  { period: '2025 — atual', role: 'UI/UX Designer', text: 'Design Circuit · Curso de UI/UX' },
+  { period: '2025 — atual', role: 'UX Designer', text: 'Ebac · Curso de UX Design' },
+  { period: '2024', role: 'Framer Expert', text: 'Framer Skills · Curso Framer Expert' },
 ];
 
 export const cta = {
