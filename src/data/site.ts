@@ -43,7 +43,7 @@ export const upcomingCases = [
     year: '2026',
     tags: ['SaaS', 'Product Designer'],
     summary:
-      'Zone é uma plataforma de voz, chat e transmissão de tela para comunidades, criada com o objetivo de ser um Hubby fácil de usar no seu dia a dia. Interface e design system em construção.',
+      'Zone é uma plataforma de voz, chat e transmissão de tela para comunidades, criada com o objetivo de ser um hub fácil de usar no seu dia a dia. Interface e design system em construção.',
     // Frase digitada na capa do card
     typed: 'Em desenvolvimento...',
   },
