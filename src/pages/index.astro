@@ -3,7 +3,7 @@ import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import foto from '../assets/images/foto.jpg';
-import { site, links, hero, about, experiences, upcomingCases } from '../data/site';
+import { site, links, hero, about, experiences, education, upcomingCases } from '../data/site';
 
 const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -152,12 +152,24 @@ const pad = (n: number) => String(n).padStart(2, '0');
       <div class="section-header">
         <span class="overline muted">03 — Experiência</span>
       </div>
-      <h2 class="h1">Experiência <span class="serif">profissional</span></h2>
+      <h2 class="h1">Experiência <span class="serif">profissional e formação</span></h2>
     </div>
 
     <ol class="xp">
       {
         experiences.map((item) => (
+          <li class="xp__item" data-reveal>
+            <span class="label muted">{item.period}</span>
+            <h3 class="h3">{item.role}</h3>
+            <p class="muted">{item.text}</p>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="overline muted xp__group" data-reveal>Formação</p>
+    <ol class="xp">
+      {
+        education.map((item) => (
           <li class="xp__item" data-reveal>
             <span class="label muted">{item.period}</span>
             <h3 class="h3">{item.role}</h3>
@@ -465,6 +477,12 @@ const pad = (n: number) => String(n).padStart(2, '0');
     gap: 8px;
     padding-block: clamp(24px, 2.2vw, 32px);
     border-bottom: 1px solid var(--border-subtle);
+  }
+
+  /* Rótulo que separa os cursos das experiências, dentro da mesma lista */
+  .xp__group {
+    padding-top: clamp(24px, 2.8vw, 40px);
+    padding-bottom: 8px;
   }
 
   .xp__cv {

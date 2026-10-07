@@ -41,9 +41,9 @@ export const upcomingCases = [
   {
     title: 'Zone',
     year: '2026',
-    tags: ['SaaS', 'IA', 'Product Designer'],
+    tags: ['SaaS', 'Product Designer'],
     summary:
-      'Zone é uma plataforma de voz, chat e transmissão de tela para comunidades, criada com dois amigos e usada no dia a dia. Interface e design system em construção.',
+      'Zone é uma plataforma de voz, chat e transmissão de tela para comunidades, criada com o objetivo de ser um Hubby fácil de usar no seu dia a dia. Interface e design system em construção.',
     // Frase digitada na capa do card
     typed: 'Em desenvolvimento...',
   },
@@ -71,6 +71,12 @@ export const experiences = [
     role: 'Product Designer',
     text: 'Cliver · Liderei projetos de UI/UX de ponta a ponta para produtos digitais, da pesquisa inicial ao design final',
   },
+];
+
+// Cursos, na mesma lista da experiência. Substituir os períodos entre colchetes pelas datas reais.
+export const education = [
+  { period: '[2025 — atual]', role: 'UI/UX', text: 'Design Circuit · Curso em andamento' },
+  { period: '[2024]', role: 'Framer Expert', text: 'Framer Skills · Curso concluído' },
 ];
 
 export const cta = {

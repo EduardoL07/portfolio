@@ -47,7 +47,7 @@ sections:
       phone: ../../assets/images/redecora/solucao-phone.png
   - label: Resultados
     title: O fluxo principal funcionou de primeira.
-    body: No teste não moderado no Maze, os 8 participantes concluíram a primeira missão, sem desistências, em 72,8 segundos em média. Os cliques fora do alvo (45,9%) vieram de toques exploratórios nas ilustrações do onboarding. As missões 02 a 05 ainda estão em coleta.
+    body: No teste não moderado no Maze, os 8 participantes concluíram a primeira missão, sem desistências, em 72,8 segundos em média. Os cliques fora do alvo (45,9%) vieram de toques exploratórios nas ilustrações do onboarding. As missões 02 a 05 também foram concluídas.
 gallery:
   - image: ../../assets/images/redecora/tela-01-light.png
     imageDark: ../../assets/images/redecora/tela-01-dark.png

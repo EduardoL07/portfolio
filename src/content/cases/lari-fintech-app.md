@@ -21,7 +21,7 @@ sections:
     body: "Quem vive, viaja e transaciona pelo mundo lida com várias moedas e com custos pouco transparentes a cada operação. A Lari nasceu para simplificar essa rotina: acompanhar moedas em tempo real, converter valores e fazer pagamentos internacionais com mais clareza, ajudando o usuário a reduzir custos e a decidir melhor."
   - label: Processo
     title: Da pesquisa ao protótipo de alta fidelidade.
-    body: "O projeto foi do entendimento do problema às interfaces de alta fidelidade e aos protótipos, com um objetivo: tornar as operações financeiras internacionais mais simples, transparentes e intuitivas."
+    body: "Trabalhei em squad, do entendimento do problema às interfaces de alta fidelidade e aos protótipos, com um objetivo: tornar as operações financeiras internacionais mais simples, transparentes e intuitivas."
     steps:
       - icon: briefing
         title: Briefing
