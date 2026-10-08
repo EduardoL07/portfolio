@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://portfolio-xi-inky-6ugen7d7un.vercel.app/sitemap-index.xml

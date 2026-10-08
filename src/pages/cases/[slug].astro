@@ -87,6 +87,7 @@ const ficha = [
                   <ThemedImage
                     image={block.image}
                     dark={block.imageDark}
+                    alt={`${data.title} — ${block.label.toLowerCase()}`}
                     widths={[700, 1200, 1792]}
                     sizes="(min-width: 900px) 62vw, 90vw"
                   />
@@ -137,7 +138,7 @@ const ficha = [
                   </div>
                   {block.card.phone && (
                     <div class="insight__phone">
-                      <Image src={block.card.phone} alt="" widths={[471, 942]} sizes="(min-width: 900px) 440px, 80vw" />
+                      <Image src={block.card.phone} alt={`${data.title} — ${block.card.title}`} widths={[471, 942]} sizes="(min-width: 900px) 440px, 80vw" />
                     </div>
                   )}
                 </div>
@@ -162,11 +163,12 @@ const ficha = [
             </h2>
           </div>
           <div class="gallery__grid">
-            {data.gallery.map((item) => (
+            {data.gallery.map((item, k) => (
               <div class:list={['gallery__item', item.wide && 'gallery__item--wide']} data-reveal>
                 <ThemedImage
                   image={item.image}
                   dark={item.imageDark}
+                  alt={`${data.title} — tela final ${pad(k + 1)}`}
                   widths={item.wide ? [640, 1280, 2560] : [640, 1280]}
                   sizes={item.wide ? '90vw' : '(min-width: 900px) 45vw, 90vw'}
                 />
@@ -197,7 +199,7 @@ const ficha = [
           <span class="h1">{next.data.title} ↗</span>
         </div>
         <div class="next__cover">
-          <Image src={next.data.cover} alt="" widths={[440, 880]} sizes="(min-width: 900px) 440px, 90vw" />
+          <Image src={next.data.cover} alt={`Capa do case ${next.data.title}`} widths={[440, 880]} sizes="(min-width: 900px) 440px, 90vw" />
         </div>
       </a>
     </nav>
