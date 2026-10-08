@@ -1,7 +1,7 @@
 ---
 title: Assistente de Sala
 order: 3
-year: "2026"
+year: "2025"
 tags: ["Dashboard", "Design System", "UI"]
 summary: O Assistente de Sala é uma plataforma inteligente criada para apoiar professores no gerenciamento e na avaliação de atividades acadêmicas.
 cover: ../../assets/images/assistente-de-sala.png

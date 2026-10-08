@@ -1,9 +1,9 @@
 ---
 title: Lari Fintech App
 order: 2
-year: "2026"
+year: "2025"
 tags: ["Mobile App", "Fintech", "UI/UX"]
-summary: A lari é uma Fintech criada para tornar a vida financeira mais simples para quem vive, viaja e transaciona pelo mundo.
+summary: A Lari é uma fintech criada para tornar a vida financeira mais simples para quem vive, viaja e transaciona pelo mundo.
 cover: ../../assets/images/lari-fintech-app.png
 role: Product Designer
 duration: 2 Meses
